@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+void longestCommonSubstring(string str1, string str2) {
+    int n = str1.length();
+    vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+    int maxLength = 0;
+    int endIdx = 0;
+
+    // Building the table in bottom-up manner
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (str1[i-1] == str2[j-1]) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+                if (dp[i][j] > maxLength) {
+                    maxLength = dp[i][j];
+                    endIdx = i; // Store the index of the end of the longest substring
+                }
+            }
+        }
+    }
+
+    // Output the dynamic programming table
+    cout << "Dynamic Programming Table:\n";
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cout << dp[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    // The longest common substring is from str1[endIdx - maxLength] to str1[endIdx-1]
+    cout << "Longest Common Substring: " << str1.substr(endIdx - maxLength, maxLength) << endl;
+}
+
+int main() {
+    string str1 = "ABAB";
+    string str2 = "BABA";
+    
+    longestCommonSubstring(str1, str2);
+
+    return 0;
+}
